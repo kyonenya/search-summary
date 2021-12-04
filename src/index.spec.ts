@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { generateSummary } from './index';
+import { generateSummary, generateSummaryString } from './index';
 
 describe('generateSummary', () => {
   const config = {
@@ -15,9 +15,15 @@ describe('generateSummary', () => {
     assert.strictEqual(summary.isBeforeEllipsed, false);
     assert.strictEqual(summary.beforeText, 'Lorem ');
     assert.strictEqual(summary.keyword, 'ipsum');
-    assert.strictEqual(summary.afterText, ' dolor sit amet, consectetur adipiscing');
+    assert.strictEqual(
+      summary.afterText,
+      ' dolor sit amet, consectetur adipiscing'
+    );
     assert.strictEqual(summary.isAfterEllipsed, true);
-    assert.strictEqual((summary.beforeText + summary.keyword + summary.afterText).length, config.maxLength);
+    assert.strictEqual(
+      (summary.beforeText + summary.keyword + summary.afterText).length,
+      config.maxLength
+    );
   });
   it('in the middle', () => {
     const keyword = 'Ut enim';
@@ -27,7 +33,10 @@ describe('generateSummary', () => {
     assert.strictEqual(summary.keyword, 'Ut enim');
     assert.strictEqual(summary.afterText, ' ad minim veniam, quis ');
     assert.strictEqual(summary.isAfterEllipsed, true);
-    assert.strictEqual((summary.beforeText + summary.keyword + summary.afterText).length, config.maxLength);
+    assert.strictEqual(
+      (summary.beforeText + summary.keyword + summary.afterText).length,
+      config.maxLength
+    );
   });
   it('near the end', () => {
     const keyword = 'commodo';
@@ -38,6 +47,45 @@ describe('generateSummary', () => {
     assert.strictEqual(summary.afterText, ' consequat.');
     assert.strictEqual(summary.isAfterEllipsed, false);
     // notEqual because beforeLength should be fixed
-    assert.notEqual((summary.beforeText + summary.keyword + summary.afterText).length, config.maxLength);
+    assert.notEqual(
+      (summary.beforeText + summary.keyword + summary.afterText).length,
+      config.maxLength
+    );
+  });
+});
+
+describe('generateSummaryString', () => {
+  const config = {
+    maxLength: 50,
+    beforeLength: 20,
+    elipsisToken: '...',
+    keywordModifier: (keyword: string) => `**${keyword}**`
+  };
+  const text =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+
+  it('near the top', () => {
+    const keyword = 'ipsum';
+    const summaryString = generateSummaryString(text, keyword, config);
+    assert.strictEqual(
+      summaryString,
+      'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
+    );
+  });
+  it('in the middle', () => {
+    const keyword = 'Ut enim';
+    const summaryString = generateSummaryString(text, keyword, config);
+    assert.strictEqual(
+      summaryString,
+      '...olore magna aliqua. **Ut enim** ad minim veniam, quis ...'
+    );
+  });
+  it('near the end', () => {
+    const keyword = 'commodo';
+    const summaryString = generateSummaryString(text, keyword, config);
+    assert.strictEqual(
+      summaryString,
+      '...si ut aliquip ex ea **commodo** consequat.'
+    );
   });
 });

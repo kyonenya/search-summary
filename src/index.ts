@@ -7,8 +7,8 @@ export type Summary = {
 };
 
 export type SummaryConfig = {
-  maxLength: number;
-  beforeLength: number;
+  maxLength?: number;
+  beforeLength?: number;
 };
 
 export function generateSummary(
@@ -36,4 +36,29 @@ export function generateSummary(
       : text.substr(afterIndex, afterLength),
     isAfterEllipsed: beforeIndex + maxLength < text.length,
   };
+}
+
+export type SummaryStringConfig = SummaryConfig & {
+  elipsisToken?: string;
+  keywordModifier?: (keyword: string) => string;
+};
+
+export function generateSummaryString(
+  text: string,
+  keyword: string,
+  config?: SummaryStringConfig
+) {
+  const summary = generateSummary(text, keyword, config);
+  const {
+    elipsisToken = '...',
+    keywordModifier = (keyword: string) => keyword,
+  } = config ?? {};
+
+  return (
+    (summary.isBeforeEllipsed ? elipsisToken : '') +
+    summary.beforeText +
+    keywordModifier(summary.keyword) +
+    summary.afterText +
+    (summary.isAfterEllipsed ? elipsisToken : '')
+  );
 }
