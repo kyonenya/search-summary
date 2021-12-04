@@ -15,11 +15,12 @@ export function generateSummary(
   text: string,
   keyword: string,
   config?: SummaryConfig
-): Summary {
+): Summary | undefined {
   const { maxLength = 50, beforeLength = 20 } = config ?? {};
   const afterLength = maxLength - beforeLength - keyword.length;
 
   const keywordIndex = text.indexOf(keyword);
+  if (keywordIndex === -1) return;
   const beforeIndex = keywordIndex - beforeLength;
   const afterIndex = keywordIndex + keyword.length;
 
@@ -47,8 +48,9 @@ export function generateSummaryString(
   text: string,
   keyword: string,
   config?: SummaryStringConfig
-) {
+): string | undefined {
   const summary = generateSummary(text, keyword, config);
+  if (summary === undefined) return;
   const {
     elipsisToken = '...',
     keywordModifier = (keyword: string) => keyword,
