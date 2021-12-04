@@ -7,7 +7,7 @@ export type Summary = {
 };
 
 export type SummaryConfig = {
-  wholeLength: number;
+  maxLength: number;
   beforeLength: number;
 };
 
@@ -16,12 +16,13 @@ export function generateSummary(
   keyword: string,
   config?: SummaryConfig
 ): Summary {
-  const { wholeLength = 50, beforeLength = 20 } = config ?? {};
+  const { maxLength = 50, beforeLength = 20 } = config ?? {};
+  const afterLength = maxLength - beforeLength - keyword.length;
 
-  const afterLength = wholeLength - beforeLength - keyword.length;
   const keywordIndex = text.indexOf(keyword);
   const beforeIndex = keywordIndex - beforeLength;
   const afterIndex = keywordIndex + keyword.length;
+
   const isNearTop = beforeIndex <= 0;
 
   return {
@@ -31,8 +32,8 @@ export function generateSummary(
       : text.substr(beforeIndex, beforeLength),
     keyword: text.substr(keywordIndex, keyword.length),
     afterText: isNearTop
-      ? text.substr(afterIndex, wholeLength - afterIndex)
+      ? text.substr(afterIndex, maxLength - afterIndex)
       : text.substr(afterIndex, afterLength),
-    isAfterEllipsed: beforeIndex + wholeLength < text.length,
+    isAfterEllipsed: beforeIndex + maxLength < text.length,
   };
 }
