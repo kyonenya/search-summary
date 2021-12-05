@@ -7,6 +7,7 @@ Generate a search result string, supports ellipsis.
 ```
 $ npm install search-summary
 ```
+
 ## Usage
 
 ```js
@@ -21,6 +22,8 @@ generateSummary(text, 'commodo', config);
 // '...si ut aliquip ex ea **commodo** consequat.'
 generateSummary(text, 'ipsum', config);
 // 'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
+generateSummary(text, 'dummy keyword', config);
+// undefined
 ```
 
 Or you can get an object.
@@ -38,9 +41,9 @@ generateSummaryEntity(text, 'ipsum');
 // }
 ```
 
-Also see [index.spec.ts](https://github.com/kyonenya/search-summary/blob/main/src/index.spec.ts).
+See also [index.spec.ts](https://github.com/kyonenya/search-summary/blob/main/src/index.spec.ts).
 
-## Config
+## Configure
 
 ```js
 // example: default config
@@ -50,4 +53,21 @@ const config = {
   elipsisToken: '...',
   keywordModifier: (keyword: string) => keyword,
 };
+generateSummary(text, keyword, config);
 ```
+
+Or you can pass the config beforehand.
+
+```js
+const generateSummary = generateSummaryFactory(config);
+generateSummary(text, keyword1);
+generateSummary(text, keyword2);
+
+const generateSummaryEntity = generateSummaryEntityFactory(config);
+generateSummaryEntity(text, keyword1);
+generateSummaryEntity(text, keyword2);
+```
+
+## License
+
+MIT © kyonenya

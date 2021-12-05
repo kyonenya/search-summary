@@ -28,7 +28,7 @@
     "typescript",
     "util"
   ],
-  "author": "Takashi Kyonenya <kyonenya.takashi@gmail.com>",
+  "author": "kyonenya <kyonenya.takashi@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/kyonenya/search-summary#readme",
   "dependencies": {},
