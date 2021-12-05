@@ -13,7 +13,10 @@ $ npm install search-summary
 ```js
 import { generateSummary } from 'search-summary';
 
-const config = { ellipsisToken: '...', keywordModifier: (keyword) => `**${keyword}**` };
+const config = {
+  ellipsisToken: '...',
+  keywordModifier: (keyword) => `**${keyword}**`
+};
 const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
 
 generateSummary(text, 'Ut enim', config);
@@ -59,6 +62,8 @@ generateSummary(text, keyword, config);
 Or you can pass the config beforehand.
 
 ```js
+import { generateSummaryFactory, generateSummaryEntityFactory } from 'search-summary';
+
 const generateSummary = generateSummaryFactory(config);
 generateSummary(text, keyword1);
 generateSummary(text, keyword2);
@@ -70,4 +75,4 @@ generateSummaryEntity(text, keyword2);
 
 ## License
 
-MIT © kyonenya
+MIT © [kyonenya](https://github.com/kyonenya)
