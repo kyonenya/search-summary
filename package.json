@@ -2,20 +2,17 @@
   "name": "search-summary",
   "version": "1.0.0",
   "description": "Generate a search result string, supports ellipsis.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
     "build": "tsc --p tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "test": "ts-mocha src/**/*.spec.ts",
     "typecheck": "tsc -w --noEmit",
-    "format": "prettier --write src/**/*.ts"
-  },
-  "prettier": {
-    "singleQuote": true
+    "format": "prettier --write **/*.{ts,json}"
   },
   "repository": {
     "type": "git",
@@ -24,8 +21,8 @@
   "keywords": [
     "search",
     "summary",
+    "ellipsis",
     "string",
-    "typescript",
     "util"
   ],
   "author": "kyonenya <kyonenya.takashi@gmail.com>",
