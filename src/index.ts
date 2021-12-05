@@ -1,4 +1,4 @@
-export type Summary = {
+export type SummaryEntity = {
   isBeforeEllipsed: boolean;
   beforeText: string;
   keyword: string;
@@ -6,16 +6,16 @@ export type Summary = {
   isAfterEllipsed: boolean;
 };
 
-export type SummaryConfig = {
+export type SummaryEntityConfig = {
   maxLength?: number;
   beforeLength?: number;
 };
 
-export function generateSummary(
+export function generateSummaryEntity(
   text: string,
   keyword: string,
   config?: SummaryConfig
-): Summary | undefined {
+): SummaryEntity | undefined {
   const { maxLength = 50, beforeLength = 20 } = config ?? {};
   const afterLength = maxLength - beforeLength - keyword.length;
 
@@ -39,17 +39,17 @@ export function generateSummary(
   };
 }
 
-export type SummaryStringConfig = SummaryConfig & {
+export type SummaryConfig = SummaryEntityConfig & {
   elipsisToken?: string;
   keywordModifier?: (keyword: string) => string;
 };
 
-export function generateSummaryString(
+export function generateSummary(
   text: string,
   keyword: string,
-  config?: SummaryStringConfig
+  config?: SummaryConfig
 ): string | undefined {
-  const summary = generateSummary(text, keyword, config);
+  const summary = generateSummaryEntity(text, keyword, config);
   if (summary === undefined) return;
   const {
     elipsisToken = '...',

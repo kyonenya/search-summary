@@ -1,7 +1,7 @@
 import assert from 'assert';
-import { generateSummary, generateSummaryString } from './index';
+import { generateSummary, generateSummaryEntity } from './index';
 
-describe('generateSummary', () => {
+describe('generateSummaryEntity', () => {
   const config = {
     maxLength: 50,
     beforeLength: 20,
@@ -11,7 +11,7 @@ describe('generateSummary', () => {
 
   it('near the top', () => {
     const keyword = 'ipsum';
-    const summary = generateSummary(text, keyword, config);
+    const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary?.isBeforeEllipsed, false);
     assert.strictEqual(summary?.beforeText, 'Lorem ');
     assert.strictEqual(summary?.keyword, 'ipsum');
@@ -27,7 +27,7 @@ describe('generateSummary', () => {
   });
   it('in the middle', () => {
     const keyword = 'Ut enim';
-    const summary = generateSummary(text, keyword, config);
+    const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary?.isBeforeEllipsed, true);
     assert.strictEqual(summary?.beforeText, 'olore magna aliqua. ');
     assert.strictEqual(summary?.keyword, 'Ut enim');
@@ -40,7 +40,7 @@ describe('generateSummary', () => {
   });
   it('near the end', () => {
     const keyword = 'commodo';
-    const summary = generateSummary(text, keyword, config);
+    const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary?.isBeforeEllipsed, true);
     assert.strictEqual(summary?.beforeText, 'si ut aliquip ex ea ');
     assert.strictEqual(summary?.keyword, 'commodo');
@@ -59,7 +59,7 @@ describe('generateSummary', () => {
   });
 });
 
-describe('generateSummaryString', () => {
+describe('generateSummary', () => {
   const config = {
     maxLength: 50,
     beforeLength: 20,
@@ -71,7 +71,7 @@ describe('generateSummaryString', () => {
 
   it('near the top', () => {
     const keyword = 'ipsum';
-    const summaryString = generateSummaryString(text, keyword, config);
+    const summaryString = generateSummary(text, keyword, config);
     assert.strictEqual(
       summaryString,
       'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
@@ -79,7 +79,7 @@ describe('generateSummaryString', () => {
   });
   it('in the middle', () => {
     const keyword = 'Ut enim';
-    const summaryString = generateSummaryString(text, keyword, config);
+    const summaryString = generateSummary(text, keyword, config);
     assert.strictEqual(
       summaryString,
       '...olore magna aliqua. **Ut enim** ad minim veniam, quis ...'
@@ -87,7 +87,7 @@ describe('generateSummaryString', () => {
   });
   it('near the end', () => {
     const keyword = 'commodo';
-    const summaryString = generateSummaryString(text, keyword, config);
+    const summaryString = generateSummary(text, keyword, config);
     assert.strictEqual(
       summaryString,
       '...si ut aliquip ex ea **commodo** consequat.'
@@ -95,7 +95,7 @@ describe('generateSummaryString', () => {
   });
   it('not matched', () => {
     const keyword = 'dummy keyword';
-    const summaryString = generateSummaryString(text, keyword, config);
+    const summaryString = generateSummary(text, keyword, config);
     assert.strictEqual(summaryString, undefined);
   });
 });
