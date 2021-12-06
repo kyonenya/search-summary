@@ -1,6 +1,6 @@
 # search-summary
 
-Generate a search result string, supports ellipsis.
+Generate a summarized search result string. Zero dependency utils.
 
 ## Install
 
@@ -51,13 +51,17 @@ generateSummaryEntity(text, 'ipsum');
 
 ```js
 // example: default config
-const config = {
+generateSummary(text, keyword, {
   maxLength: 50,
   beforeLength: 20,
   elipsisToken: '...',
   keywordModifier: (keyword: string) => keyword,
-};
-generateSummary(text, keyword, config);
+});
+
+generateSummaryEntity(text, keyword, {
+  maxLength: 50,
+  beforeLength: 20,
+});
 ```
 
 Or you can pass the config in advance.

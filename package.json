@@ -1,7 +1,7 @@
 {
   "name": "search-summary",
   "version": "1.0.0",
-  "description": "Generate a search result string, supports ellipsis.",
+  "description": "Generate a summarized search result string. Zero dependency utils.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -21,9 +21,9 @@
   "keywords": [
     "search",
     "summary",
-    "ellipsis",
     "string",
-    "util"
+    "zero-dependency",
+    "utils"
   ],
   "author": "kyonenya <kyonenya.takashi@gmail.com>",
   "license": "MIT",
