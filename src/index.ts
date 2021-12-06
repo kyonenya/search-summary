@@ -55,16 +55,16 @@ export const generateSummaryFactory =
     const summary = generateSummaryEntity(text, keyword, config);
     if (summary === undefined) return;
     const {
-      elipsisToken = "...",
+      elipsisToken = '...',
       keywordModifier = (keyword: string) => keyword,
     } = config ?? {};
 
     return (
-      (summary.isBeforeEllipsed ? elipsisToken : "") +
+      (summary.isBeforeEllipsed ? elipsisToken : '') +
       summary.beforeText +
       keywordModifier(summary.keyword) +
       summary.afterText +
-      (summary.isAfterEllipsed ? elipsisToken : "")
+      (summary.isAfterEllipsed ? elipsisToken : '')
     );
   };
 
