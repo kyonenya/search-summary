@@ -54,8 +54,23 @@ describe('generateSummaryEntity', () => {
   });
   it('not matched', () => {
     const keyword = 'dummy keyword';
-    const summary = generateSummary(text, keyword, config);
+    const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary, undefined);
+  });
+  it('short', () => {
+    const shortText = 'Lorem ipsum dolor sit amet';
+    const keyword = 'ipsum';
+    const summary = generateSummaryEntity(shortText, keyword, config);
+    assert.strictEqual(summary?.isBeforeEllipsed, false);
+    assert.strictEqual(summary?.beforeText, 'Lorem ');
+    assert.strictEqual(summary?.keyword, 'ipsum');
+    assert.strictEqual(summary?.afterText, ' dolor sit amet');
+    assert.strictEqual(summary?.isAfterEllipsed, false);
+    // notEqual
+    assert.notEqual(
+      (summary?.beforeText + summary?.keyword + summary?.afterText).length,
+      config.maxLength
+    );
   });
 });
 

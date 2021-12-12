@@ -27,9 +27,9 @@ export const generateSummaryEntityFactory =
     return {
       isBeforeEllipsed: !isNearTop,
       beforeText: isNearTop
-        ? text.substr(0, keywordIndex)
-        : text.substr(beforeIndex, beforeLength),
-      keyword: text.substr(keywordIndex, keyword.length),
+        ? text.substring(0, keywordIndex)
+        : text.substring(beforeIndex, keywordIndex), // ellipsed
+      keyword: text.substring(keywordIndex, afterIndex),
       afterText: isNearTop
         ? text.substr(afterIndex, maxLength - afterIndex)
         : text.substr(afterIndex, afterLength),
