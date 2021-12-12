@@ -1,13 +1,13 @@
 import assert from 'assert';
-import { generateSummary, generateSummaryEntity } from './index';
+import { generateSummaryEntity } from './index';
 
 describe('generateSummaryEntity', () => {
+  const text =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
   const config = {
     maxLength: 50,
     beforeLength: 20,
   };
-  const text =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
 
   it('near the top', () => {
     const keyword = 'ipsum';
@@ -52,50 +52,30 @@ describe('generateSummaryEntity', () => {
       config.maxLength
     );
   });
-  it('not matched', () => {
-    const keyword = 'dummy keyword';
-    const summary = generateSummary(text, keyword, config);
-    assert.strictEqual(summary, undefined);
-  });
-});
-
-describe('generateSummary', () => {
-  const config = {
-    maxLength: 50,
-    beforeLength: 20,
-    elipsisToken: '...',
-    keywordModifier: (keyword: string) => `**${keyword}**`,
-  };
-  const text =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-
-  it('near the top', () => {
+  it('short', () => {
+    const text = 'Lorem ipsum dolor sit amet';
     const keyword = 'ipsum';
-    const summaryString = generateSummary(text, keyword, config);
-    assert.strictEqual(
-      summaryString,
-      'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
-    );
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary?.isBeforeEllipsed, false);
+    assert.strictEqual(summary?.beforeText, 'Lorem ');
+    assert.strictEqual(summary?.keyword, 'ipsum');
+    assert.strictEqual(summary?.afterText, ' dolor sit amet');
+    assert.strictEqual(summary?.isAfterEllipsed, false);
   });
-  it('in the middle', () => {
-    const keyword = 'Ut enim';
-    const summaryString = generateSummary(text, keyword, config);
-    assert.strictEqual(
-      summaryString,
-      '...olore magna aliqua. **Ut enim** ad minim veniam, quis ...'
-    );
-  });
-  it('near the end', () => {
-    const keyword = 'commodo';
-    const summaryString = generateSummary(text, keyword, config);
-    assert.strictEqual(
-      summaryString,
-      '...si ut aliquip ex ea **commodo** consequat.'
-    );
+  it('same length', () => {
+    const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing';
+    assert.strictEqual(text.length, config.maxLength); // same length
+    const keyword = 'ipsum';
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary?.isBeforeEllipsed, false); // not ellipsed
+    assert.strictEqual(summary?.beforeText, 'Lorem ');
+    assert.strictEqual(summary?.keyword, 'ipsum');
+    assert.strictEqual(summary?.afterText, ' dolor sit amet, consectetur adipiscing');
+    assert.strictEqual(summary?.isAfterEllipsed, false); // not ellipsed
   });
   it('not matched', () => {
     const keyword = 'dummy keyword';
-    const summaryString = generateSummary(text, keyword, config);
-    assert.strictEqual(summaryString, undefined);
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary, undefined);
   });
 });
