@@ -53,14 +53,25 @@ describe('generateSummaryEntity', () => {
     );
   });
   it('short', () => {
-    const shortText = 'Lorem ipsum dolor sit amet';
+    const text = 'Lorem ipsum dolor sit amet';
     const keyword = 'ipsum';
-    const summary = generateSummaryEntity(shortText, keyword, config);
+    const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary?.isBeforeEllipsed, false);
     assert.strictEqual(summary?.beforeText, 'Lorem ');
     assert.strictEqual(summary?.keyword, 'ipsum');
     assert.strictEqual(summary?.afterText, ' dolor sit amet');
     assert.strictEqual(summary?.isAfterEllipsed, false);
+  });
+  it('same length', () => {
+    const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing';
+    assert.strictEqual(text.length, config.maxLength); // same length
+    const keyword = 'ipsum';
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary?.isBeforeEllipsed, false); // not ellipsed
+    assert.strictEqual(summary?.beforeText, 'Lorem ');
+    assert.strictEqual(summary?.keyword, 'ipsum');
+    assert.strictEqual(summary?.afterText, ' dolor sit amet, consectetur adipiscing');
+    assert.strictEqual(summary?.isAfterEllipsed, false); // not ellipsed
   });
   it('not matched', () => {
     const keyword = 'dummy keyword';

@@ -17,21 +17,17 @@ export const generateSummaryEntityFactory =
     const { maxLength = 50, beforeLength = 20 } = config ?? {};
     const keywordIndex = text.indexOf(keyword);
     if (keywordIndex === -1) return;
-
-    const beforeIndex = keywordIndex - beforeLength;
+    const beforeIndex =
+      keywordIndex - beforeLength <= 0 ? 0 : keywordIndex - beforeLength;
     const afterIndex = keywordIndex + keyword.length;
-    const isNearTop = beforeIndex <= 0;
+    const endIndex = beforeIndex + maxLength;
 
     return {
-      isBeforeEllipsed: !isNearTop,
-      beforeText: isNearTop
-        ? text.substring(0, keywordIndex)
-        : text.substring(beforeIndex, keywordIndex),
+      isBeforeEllipsed: beforeIndex !== 0,
+      beforeText: text.substring(beforeIndex, keywordIndex),
       keyword: text.substring(keywordIndex, afterIndex),
-      afterText: isNearTop
-        ? text.substring(afterIndex, 0 + maxLength)
-        : text.substring(afterIndex, beforeIndex + maxLength),
-      isAfterEllipsed: beforeIndex + maxLength < text.length,
+      afterText: text.substring(afterIndex, endIndex),
+      isAfterEllipsed: endIndex < text.length,
     };
   };
 
