@@ -15,24 +15,22 @@ export const generateSummaryEntityFactory =
   (config?: SummaryConfig) =>
   (text: string, keyword: string): SummaryEntity | undefined => {
     const { maxLength = 50, beforeLength = 20 } = config ?? {};
-    const afterLength = maxLength - beforeLength - keyword.length;
-
     const keywordIndex = text.indexOf(keyword);
     if (keywordIndex === -1) return;
+
     const beforeIndex = keywordIndex - beforeLength;
     const afterIndex = keywordIndex + keyword.length;
-
     const isNearTop = beforeIndex <= 0;
 
     return {
       isBeforeEllipsed: !isNearTop,
       beforeText: isNearTop
         ? text.substring(0, keywordIndex)
-        : text.substring(beforeIndex, keywordIndex), // ellipsed
+        : text.substring(beforeIndex, keywordIndex),
       keyword: text.substring(keywordIndex, afterIndex),
       afterText: isNearTop
-        ? text.substr(afterIndex, maxLength - afterIndex)
-        : text.substr(afterIndex, afterLength),
+        ? text.substring(afterIndex, 0 + maxLength)
+        : text.substring(afterIndex, beforeIndex + maxLength),
       isAfterEllipsed: beforeIndex + maxLength < text.length,
     };
   };
