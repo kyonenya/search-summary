@@ -19,14 +19,14 @@ const config = {
   keywordModifier: (keyword) => `**${keyword}**`
 };
 
+generateSummary(text, 'ipsum', config);
+// 'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
+
 generateSummary(text, 'Ut enim', config);
 // '...olore magna aliqua. **Ut enim** ad minim veniam, quis ...'
 
 generateSummary(text, 'commodo', config);
 // '...si ut aliquip ex ea **commodo** consequat.'
-
-generateSummary(text, 'ipsum', config);
-// 'Lorem **ipsum** dolor sit amet, consectetur adipiscing...'
 
 generateSummary(text, 'dummy keyword', config);
 // undefined
