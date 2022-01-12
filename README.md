@@ -2,10 +2,12 @@
 
 Generate a summarized search result string. Zero dependency utils.
 
+[search-summary - npm](https://www.npmjs.com/package/search-summary)
+
 ## Install
 
 ```
-$ npm install search-summary
+npm install search-summary
 ```
 
 ## Usage
