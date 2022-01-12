@@ -70,11 +70,19 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.isBeforeEllipsed, false); // not ellipsed
     assert.strictEqual(summary?.beforeText, 'Lorem ');
     assert.strictEqual(summary?.keyword, 'ipsum');
-    assert.strictEqual(summary?.afterText, ' dolor sit amet, consectetur adipiscing');
+    assert.strictEqual(
+      summary?.afterText,
+      ' dolor sit amet, consectetur adipiscing'
+    );
     assert.strictEqual(summary?.isAfterEllipsed, false); // not ellipsed
   });
   it('not matched', () => {
     const keyword = 'dummy keyword';
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary, undefined);
+  });
+  it('undefined', () => {
+    const keyword = undefined;
     const summary = generateSummaryEntity(text, keyword, config);
     assert.strictEqual(summary, undefined);
   });
