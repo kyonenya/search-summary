@@ -13,7 +13,8 @@ export type SummaryEntityConfig = {
 
 export const generateSummaryEntityFactory =
   (config?: SummaryConfig) =>
-  (text: string, keyword: string): SummaryEntity | undefined => {
+  (text: string, keyword: string | undefined): SummaryEntity | undefined => {
+    if (keyword === undefined) return;
     const { maxLength = 50, beforeLength = 20 } = config ?? {};
     const keywordIndex = text.indexOf(keyword);
     if (keywordIndex === -1) return;
@@ -33,7 +34,7 @@ export const generateSummaryEntityFactory =
 
 export const generateSummaryEntity = (
   text: string,
-  keyword: string,
+  keyword: string | undefined,
   config?: SummaryConfig
 ): SummaryEntity | undefined =>
   generateSummaryEntityFactory(config)(text, keyword);
@@ -45,7 +46,7 @@ export type SummaryConfig = SummaryEntityConfig & {
 
 export const generateSummaryFactory =
   (config?: SummaryConfig) =>
-  (text: string, keyword: string): string | undefined => {
+  (text: string, keyword: string | undefined): string | undefined => {
     const summary = generateSummaryEntity(text, keyword, config);
     if (summary === undefined) return;
     const {
@@ -64,6 +65,6 @@ export const generateSummaryFactory =
 
 export const generateSummary = (
   text: string,
-  keyword: string,
+  keyword: string | undefined,
   config?: SummaryConfig
 ): string | undefined => generateSummaryFactory(config)(text, keyword);
