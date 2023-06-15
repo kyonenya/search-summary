@@ -56,7 +56,7 @@ generateSummaryEntity(text, 'ipsum');
 generateSummary(text, keyword, {
   maxLength: 50,
   beforeLength: 20,
-  elipsisToken: '...',
+  ellipsisToken: '...',
   keywordModifier: (keyword: string) => keyword,
 });
 
