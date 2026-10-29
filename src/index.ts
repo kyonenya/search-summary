@@ -35,7 +35,7 @@ export const generateSummaryEntityFactory =
 export const generateSummaryEntity = (
   text: string,
   keyword: string | undefined,
-  config?: SummaryConfig
+  config?: SummaryConfig,
 ): SummaryEntity | undefined =>
   generateSummaryEntityFactory(config)(text, keyword);
 
@@ -66,5 +66,5 @@ export const generateSummaryFactory =
 export const generateSummary = (
   text: string,
   keyword: string | undefined,
-  config?: SummaryConfig
+  config?: SummaryConfig,
 ): string | undefined => generateSummaryFactory(config)(text, keyword);
