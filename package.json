@@ -1,6 +1,6 @@
 {
   "name": "search-summary",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Generate a summarized search result string. Zero dependency utils.",
   "type": "module",
   "main": "lib/index.js",
