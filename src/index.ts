@@ -16,19 +16,22 @@ export const generateSummaryEntityFactory =
   (text: string, keyword: string | undefined): SummaryEntity | undefined => {
     if (keyword === undefined) return;
     const { maxLength = 50, beforeLength = 20 } = config ?? {};
-    const keywordIndex = text.indexOf(keyword);
-    if (keywordIndex === -1) return;
+    const keywordOffset = text.indexOf(keyword);
+    if (keywordOffset === -1) return;
+
+    const keywordIndex = [...text.slice(0, keywordOffset)].length;
     const beforeIndex =
       keywordIndex - beforeLength <= 0 ? 0 : keywordIndex - beforeLength;
-    const afterIndex = keywordIndex + keyword.length;
+    const afterIndex = keywordIndex + [...keyword].length;
     const endIndex = Math.max(afterIndex, beforeIndex + maxLength);
+    const chars = [...text];
 
     return {
       isBeforeEllipsed: beforeIndex !== 0,
-      beforeText: text.substring(beforeIndex, keywordIndex),
-      keyword: text.substring(keywordIndex, afterIndex),
-      afterText: text.substring(afterIndex, endIndex),
-      isAfterEllipsed: endIndex < text.length,
+      beforeText: chars.slice(beforeIndex, keywordIndex).join(''),
+      keyword: chars.slice(keywordIndex, afterIndex).join(''),
+      afterText: chars.slice(afterIndex, endIndex).join(''),
+      isAfterEllipsed: endIndex < chars.length,
     };
   };
 
