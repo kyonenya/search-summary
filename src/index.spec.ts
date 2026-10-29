@@ -53,6 +53,19 @@ describe('generateSummaryEntity', () => {
       config.maxLength,
     );
   });
+  it('maxLength is too short but the keyword reaches the end', () => {
+    const summary = generateSummaryEntity(text, 'consequat.', {
+      ...config,
+      maxLength: 10,
+    });
+    assert.deepStrictEqual(summary, {
+      isBeforeEllipsed: true,
+      beforeText: 'iquip ex ea commodo ',
+      keyword: 'consequat.',
+      afterText: '',
+      isAfterEllipsed: false,
+    });
+  });
   it('short', () => {
     const text = 'Lorem ipsum dolor sit amet';
     const keyword = 'ipsum';

@@ -21,7 +21,7 @@ export const generateSummaryEntityFactory =
     const beforeIndex =
       keywordIndex - beforeLength <= 0 ? 0 : keywordIndex - beforeLength;
     const afterIndex = keywordIndex + keyword.length;
-    const endIndex = beforeIndex + maxLength;
+    const endIndex = Math.max(afterIndex, beforeIndex + maxLength);
 
     return {
       isBeforeEllipsed: beforeIndex !== 0,
