@@ -1,5 +1,6 @@
 import assert from 'assert';
-import { generateSummaryEntity } from './index';
+import { describe, it } from 'node:test';
+import { generateSummaryEntity } from './index.ts';
 
 describe('generateSummaryEntity', () => {
   const text =
@@ -17,12 +18,12 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.keyword, 'ipsum');
     assert.strictEqual(
       summary?.afterText,
-      ' dolor sit amet, consectetur adipiscing'
+      ' dolor sit amet, consectetur adipiscing',
     );
     assert.strictEqual(summary.isAfterEllipsed, true);
     assert.strictEqual(
       (summary?.beforeText + summary?.keyword + summary?.afterText).length,
-      config.maxLength
+      config.maxLength,
     );
   });
   it('in the middle', () => {
@@ -35,7 +36,7 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.isAfterEllipsed, true);
     assert.strictEqual(
       (summary?.beforeText + summary?.keyword + summary?.afterText).length,
-      config.maxLength
+      config.maxLength,
     );
   });
   it('near the end', () => {
@@ -49,7 +50,7 @@ describe('generateSummaryEntity', () => {
     // notEqual because beforeLength should be fixed
     assert.notEqual(
       (summary?.beforeText + summary?.keyword + summary?.afterText).length,
-      config.maxLength
+      config.maxLength,
     );
   });
   it('short', () => {
@@ -72,7 +73,7 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.keyword, 'ipsum');
     assert.strictEqual(
       summary?.afterText,
-      ' dolor sit amet, consectetur adipiscing'
+      ' dolor sit amet, consectetur adipiscing',
     );
     assert.strictEqual(summary?.isAfterEllipsed, false); // not ellipsed
   });
