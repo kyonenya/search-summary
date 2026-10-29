@@ -19,19 +19,25 @@ export const generateSummaryEntityFactory =
     const keywordOffset = text.indexOf(keyword);
     if (keywordOffset === -1) return;
 
-    const keywordIndex = [...text.slice(0, keywordOffset)].length;
-    const beforeIndex =
-      keywordIndex - beforeLength <= 0 ? 0 : keywordIndex - beforeLength;
+    const afterOffset = keywordOffset + keyword.length;
+    const charsStartOffset = Math.max(0, keywordOffset - beforeLength * 2); // slice generously, then trim
+    const keywordIndex = [...text.slice(charsStartOffset, keywordOffset)]
+      .length;
+    const beforeIndex = Math.max(0, keywordIndex - beforeLength);
     const afterIndex = keywordIndex + [...keyword].length;
     const endIndex = Math.max(afterIndex, beforeIndex + maxLength);
-    const chars = [...text];
+    const charsEndOffset = afterOffset + (endIndex - afterIndex) * 2;
+
+    const chars = [...text.slice(charsStartOffset, charsEndOffset)];
+    const beforeText = chars.slice(beforeIndex, keywordIndex).join('');
+    const afterText = chars.slice(afterIndex, endIndex).join('');
 
     return {
-      isBeforeEllipsed: beforeIndex !== 0,
-      beforeText: chars.slice(beforeIndex, keywordIndex).join(''),
-      keyword: chars.slice(keywordIndex, afterIndex).join(''),
-      afterText: chars.slice(afterIndex, endIndex).join(''),
-      isAfterEllipsed: endIndex < chars.length,
+      isBeforeEllipsed: beforeText.length < keywordOffset,
+      beforeText,
+      keyword,
+      afterText,
+      isAfterEllipsed: afterOffset + afterText.length < text.length,
     };
   };
 
