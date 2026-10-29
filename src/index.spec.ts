@@ -76,7 +76,7 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.afterText, ' dolor sit amet');
     assert.strictEqual(summary?.isAfterEllipsed, false);
   });
-  it('multibyte characters', () => {
+  it('surrogate pairs', () => {
     const text = 'Lorem 😀 ipsum😀 dolor 😀';
     const keyword = 'ipsum😀';
     const config = {
