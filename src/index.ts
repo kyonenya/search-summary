@@ -16,19 +16,28 @@ export const generateSummaryEntityFactory =
   (text: string, keyword: string | undefined): SummaryEntity | undefined => {
     if (keyword === undefined) return;
     const { maxLength = 50, beforeLength = 20 } = config ?? {};
-    const keywordIndex = text.indexOf(keyword);
-    if (keywordIndex === -1) return;
-    const beforeIndex =
-      keywordIndex - beforeLength <= 0 ? 0 : keywordIndex - beforeLength;
-    const afterIndex = keywordIndex + keyword.length;
-    const endIndex = beforeIndex + maxLength;
+    const keywordOffset = text.indexOf(keyword);
+    if (keywordOffset === -1) return;
+
+    const afterOffset = keywordOffset + keyword.length;
+    const charsStartOffset = Math.max(0, keywordOffset - beforeLength * 2); // slice generously, then trim
+    const keywordIndex = [...text.slice(charsStartOffset, keywordOffset)]
+      .length;
+    const beforeIndex = Math.max(0, keywordIndex - beforeLength);
+    const afterIndex = keywordIndex + [...keyword].length;
+    const endIndex = Math.max(afterIndex, beforeIndex + maxLength);
+    const charsEndOffset = afterOffset + (endIndex - afterIndex) * 2;
+
+    const chars = [...text.slice(charsStartOffset, charsEndOffset)];
+    const beforeText = chars.slice(beforeIndex, keywordIndex).join('');
+    const afterText = chars.slice(afterIndex, endIndex).join('');
 
     return {
-      isBeforeEllipsed: beforeIndex !== 0,
-      beforeText: text.substring(beforeIndex, keywordIndex),
-      keyword: text.substring(keywordIndex, afterIndex),
-      afterText: text.substring(afterIndex, endIndex),
-      isAfterEllipsed: endIndex < text.length,
+      isBeforeEllipsed: beforeText.length < keywordOffset,
+      beforeText,
+      keyword,
+      afterText,
+      isAfterEllipsed: afterOffset + afterText.length < text.length,
     };
   };
 

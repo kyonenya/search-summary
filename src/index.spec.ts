@@ -53,6 +53,19 @@ describe('generateSummaryEntity', () => {
       config.maxLength,
     );
   });
+  it('maxLength is too short but the keyword reaches the end', () => {
+    const summary = generateSummaryEntity(text, 'consequat.', {
+      ...config,
+      maxLength: 10,
+    });
+    assert.deepStrictEqual(summary, {
+      isBeforeEllipsed: true,
+      beforeText: 'iquip ex ea commodo ',
+      keyword: 'consequat.',
+      afterText: '',
+      isAfterEllipsed: false,
+    });
+  });
   it('short', () => {
     const text = 'Lorem ipsum dolor sit amet';
     const keyword = 'ipsum';
@@ -62,6 +75,24 @@ describe('generateSummaryEntity', () => {
     assert.strictEqual(summary?.keyword, 'ipsum');
     assert.strictEqual(summary?.afterText, ' dolor sit amet');
     assert.strictEqual(summary?.isAfterEllipsed, false);
+  });
+  it('multibyte characters', () => {
+    const text = 'Lorem 😀 ipsum😀 dolor 😀';
+    const keyword = 'ipsum😀';
+    const config = {
+      maxLength: 16,
+      beforeLength: 2,
+    };
+    const summary = generateSummaryEntity(text, keyword, config);
+    assert.strictEqual(summary?.isBeforeEllipsed, true);
+    assert.strictEqual(summary?.beforeText, '😀 ');
+    assert.strictEqual(summary?.keyword, keyword);
+    assert.strictEqual(summary?.afterText, ' dolor 😀');
+    assert.strictEqual(summary?.isAfterEllipsed, false);
+    assert.strictEqual(
+      [...(summary?.beforeText + summary?.keyword + summary?.afterText)].length,
+      config.maxLength,
+    );
   });
   it('same length', () => {
     const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing';
